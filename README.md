@@ -1,2 +1,1 @@
-# problem-solving
-Solving different type of problems
+#### Journey to solving different type of problems
