@@ -10,8 +10,8 @@
 var minEatingSpeed = function (piles, h) {
     // Determine the search range for eating speed
     let maxValue = Math.max(...piles);  // Max pile size is the upper bound for speed
-    let L = 1;  // Lower bound for speed (can't be 0, as she needs to eat at least 1 banana per hour)
-    let ans = -1;  // Initialize answer to an invalid state
+    let L = 1;  // Minimum possible speed
+    let ans = -1;
 
     /**
      * Helper function to calculate the total hours required to eat all piles
@@ -23,27 +23,28 @@ var minEatingSpeed = function (piles, h) {
      */
     function hoursRequired(speed, piles) {
         let hours = 0;
-        for (let n of piles) {
+        for (let pile of piles) {
+            // Remove this because taking longer runtime because of conditional operator
+            // hours += Math.floor(n / speed) + (n % speed !== 0 ? 1 : 0);
+
             // Calculate hours needed for each pile with the current speed
-            hours += Math.floor(n / speed) + (n % speed !== 0 ? 1 : 0);
+            hours += Math.floor((n + speed - 1)/ speed);
         }
         return hours;
     }
 
     // Binary search to find the minimum speed that allows Koko to finish in `h` hours
     while (L <= maxValue) {
-        let mid = Math.floor((L + maxValue) / 2);  // Middle point as potential speed
-        let totalHoursRequired = hoursRequired(mid, piles);  // Hours needed at `mid` speed
+        let mid = Math.floor((L + maxValue) / 2);  
+        let totalHoursRequired = hoursRequired(mid, piles);
 
         if (totalHoursRequired <= h) {
-            // If she can finish within `h` hours at this speed, it's a potential answer
-            ans = mid;
-            maxValue = mid - 1;  // Try to find a lower speed that still works
+            ans = mid;          // Potential answer, try a lower speed
+            maxValue = mid - 1;  
         } else {
-            // Otherwise, increase the speed to reduce time required
-            L = mid + 1;
+            L = mid + 1;        // Increase speed to reduce total hours
         }
     }
 
-    return ans;  // Return the minimum speed found
+    return ans;
 };
