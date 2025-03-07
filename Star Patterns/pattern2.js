@@ -6,7 +6,7 @@
 *****
 */
 class Solution {
-  pattern21(n) {
+  pattern(n) {
     for (let i = 1; i <= n; i++) {
       let chr = "";
       for (let j = 1; j <= n; j++) {
